@@ -29,3 +29,4 @@ react-meteor-data
 accounts-base
 accounts-ui
 accounts-password
+#kadira:flow-router
