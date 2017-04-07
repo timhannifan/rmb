@@ -3,10 +3,12 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from '../accounts/AccountsUIWrapper.jsx';
-import TodoList from '../components/TodoList.jsx';
+import TodoListContainer from './TodoListContainer.jsx';
 
 
 export default class AppContainer extends Component {
+  
+
   render() {
   	console.log(this);
     return (
@@ -15,9 +17,9 @@ export default class AppContainer extends Component {
 	      	<AccountsUIWrapper/>
 	      </header>
 
-        <TodoList/>
-
-
+        <div>
+          <TodoListContainer/>
+        </div>
       </div>
     );
   }

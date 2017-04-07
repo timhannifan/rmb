@@ -2,15 +2,26 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Task from './Task.jsx';
-import { Tasks } from '../../api/tasks.js';
+import ReactDOM from 'react-dom';
 
-class TodoList extends Component {
+export default class TodoList extends Component {
   constructor(props) {
     super(props);
  
     this.state = {
       hideCompleted: false,
     };
+  }
+  handleSubmit(event) {
+    event.preventDefault();
+  
+    // Find the text field via the React ref
+    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+
+    Meteor.call('tasks.insert', text);
+
+    // Clear form
+    ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
   renderTasks() {
   	console.log(this);
@@ -31,9 +42,27 @@ class TodoList extends Component {
   }
   render() {
     return (
-      <ul>
-        {this.renderTasks()}
-      </ul>
+      <div>
+        
+        { this.props.currentUser ?
+        <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
+          <input
+           type="text"
+           ref="textInput"
+           placeholder="Type to add a new item"
+           />
+        </form>
+        : 
+          <div>
+            <h4>You must be logged in to create a new item.</h4>
+          </div>
+        }
+
+        <ul>
+          {this.renderTasks()}
+        </ul>
+
+      </div>
     );
   }
 }
@@ -43,14 +72,3 @@ TodoList.propTypes = {
   incompleteCount: PropTypes.number.isRequired,
   currentUser: PropTypes.object,
 };
-
-export default createContainer(() => {
-  Meteor.subscribe('tasks');
-
-
-  return {
-    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
-    incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
-    currentUser: Meteor.user()
-  };
-}, TodoList);

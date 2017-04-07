@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import classnames from 'classnames';
-import { Tasks } from '../../api/tasks.js';
 
 // Task component - represents a single todo item
 export default class Task extends Component {
@@ -16,13 +15,11 @@ export default class Task extends Component {
 	}
 	
 	deleteThisTask() {
-	  // Tasks.remove(this.props.task._id);
     Meteor.call('tasks.remove', this.props.task._id);
 	}
 
   render() {
 
-    // const taskClassName = this.props.task.checked ? 'checked' : '';
   	const taskClassName = classnames({
       checked: this.props.task.checked,
       private: this.props.task.private
