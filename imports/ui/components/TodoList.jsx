@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { createContainer } from 'meteor/react-meteor-data';
 import Task from './Task.jsx';
 import ReactDOM from 'react-dom';
+import AccountsUIWrapper from '../accounts/AccountsUIWrapper.jsx';
 
 export default class TodoList extends Component {
   constructor(props) {
@@ -55,6 +55,7 @@ export default class TodoList extends Component {
         : 
           <div>
             <h4>You must be logged in to create a new item.</h4>
+            <AccountsUIWrapper/>
           </div>
         }
 
